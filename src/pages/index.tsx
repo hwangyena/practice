@@ -127,6 +127,10 @@ const Home: NextPage = () => {
     setValidation({ message: '', pass: true });
   };
 
+  const handleSaveCookie = () => {
+    document.cookie = `test = hello cookie`;
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -212,6 +216,10 @@ const Home: NextPage = () => {
           <button onClick={() => setCount('decrease')}>-</button>
           <span>{data?.count}</span>
           <button onClick={() => setCount('increase')}>+</button>
+        </section>
+        <section>
+          <h3>Cookie</h3>
+          <button onClick={handleSaveCookie}>save cookie</button>
         </section>
       </main>
     </div>

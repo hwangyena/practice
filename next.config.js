@@ -12,7 +12,7 @@ const nextConfig = {
   rewrites: async () => {
     return [
       {
-        source: '/api/*',
+        source: '/api',
         destination: 'https://api.instantwebtools.net',
       },
     ];

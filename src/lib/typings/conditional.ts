@@ -43,3 +43,23 @@ type ToArrayNonDist<T> = [T] extends [any] ? T[] : never;
 const stringToArr: ToArray<string> = ['hello'];
 const StrArrOrNumArr: ToArray<string | number> = ['hello']; // string[] or number[]
 const StrArrOrNumArr2: ToArrayNonDist<string | number> = ['hello', 1, 2]; // (string | number)[]
+
+///
+
+type A = { a: string };
+type B = A & { b: number };
+type GetT<T> = T extends B ? B : A;
+
+const method = <T>(value: GetT<T> | undefined) => {
+  console.log('value', value?.b); //ERROR!
+};
+
+const better = (value: A | B) => {
+  if ('b' in value) {
+    // GOOD: type guard
+    console.log('value is b:', value);
+  } else console.log('value is a: ', value);
+};
+
+const test: B = { a: 'a', b: 1 };
+method(test);

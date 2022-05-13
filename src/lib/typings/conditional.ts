@@ -63,3 +63,18 @@ const better = (value: A | B) => {
 
 const test: B = { a: 'a', b: 1 };
 method(test);
+
+///
+
+type GetReturn<T> = T extends (...args: never[]) => infer R ? R : never;
+type Num = GetReturn<() => number>;
+
+type ReturnPromise<T> = T extends (...args: infer A) => infer R ? (...args: A) => Promise<R> : T;
+type Promisify<T> = { [P in keyof T]: ReturnPromise<T[P]> };
+
+type PromisifyItem = {
+  id: string;
+  getItem: () => string;
+};
+
+const item: Promisify<PromisifyItem> = { getItem: async () => 'hey', id: 'hello?' };

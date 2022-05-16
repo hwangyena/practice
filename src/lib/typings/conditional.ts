@@ -48,11 +48,6 @@ const StrArrOrNumArr2: ToArrayNonDist<string | number> = ['hello', 1, 2]; // (st
 
 type A = { a: string };
 type B = A & { b: number };
-type GetT<T> = T extends B ? B : A;
-
-const method = <T>(value: GetT<T> | undefined) => {
-  console.log('value', value?.b); //ERROR!
-};
 
 const better = (value: A | B) => {
   if ('b' in value) {
@@ -61,8 +56,12 @@ const better = (value: A | B) => {
   } else console.log('value is a: ', value);
 };
 
+// type GetT<T> = T extends B ? B : A;
+// const method = <T>(value: GetT<T> | undefined) => {
+//   console.log('value', value?.b); //ERROR!
+// };
+
 const test: B = { a: 'a', b: 1 };
-method(test);
 
 ///
 

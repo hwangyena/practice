@@ -1,0 +1,10 @@
+.range {
+  color-scheme: dark;
+  accent-color: '#abbaba';
+}
+
+.dialog {
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.349);
+}

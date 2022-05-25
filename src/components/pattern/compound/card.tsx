@@ -2,9 +2,13 @@ import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
 const LIMIT = 3;
 
+interface ReactWithChildren {
+  children?: ReactNode;
+}
+
 interface ICardComposition {
-  CardList: FC;
-  CardButton: FC;
+  CardList: FC<ReactWithChildren>;
+  CardButton: FC<ReactWithChildren>;
 }
 
 interface ICardContext {
@@ -16,7 +20,7 @@ interface ICardContext {
 const CardContext = createContext<ICardContext>({ isCollapsed: false, onToggleCollapsed: () => {} });
 
 /** 전체 카드 */
-const Card: FC & ICardComposition = ({ children }) => {
+const Card: FC<ReactWithChildren> & ICardComposition = ({ children }) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const onToggleCollapsed = () => {
@@ -33,7 +37,7 @@ const Card: FC & ICardComposition = ({ children }) => {
 };
 
 /** 카드 리스트 */
-const CardList: FC = ({ children }) => {
+const CardList: FC<ReactWithChildren> = ({ children }) => {
   const { isCollapsed } = useContext(CardContext);
 
   if (!children) return <></>;

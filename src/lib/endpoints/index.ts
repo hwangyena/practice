@@ -6,6 +6,7 @@ export const SWR_KEY = {
   popup: '/local/popup',
   userInfo: '/local/userinfo',
 };
+const pendingRequest = new Map();
 
 axios.defaults.baseURL = '/rest-api/';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -61,6 +62,34 @@ const handleError = (err: FetchError | AxiosError | unknown): FetchError => {
   return errRes;
 };
 
+const makeKey = (config: AxiosRequestConfig) => {
+  const { params, data, method, url } = config;
+  return [method, url, JSON.stringify(params), JSON.stringify(data)].join('&');
+};
+
+const addPendingRequest = (config: AxiosRequestConfig) => {
+  const requestKey = makeKey(config);
+
+  config.cancelToken =
+    config.cancelToken ||
+    new axios.CancelToken((cancel) => {
+      if (!pendingRequest.has(requestKey)) {
+        pendingRequest.set(requestKey, cancel);
+      }
+    });
+};
+
+const removePendingRequest = (config: AxiosRequestConfig) => {
+  const requestKey = makeKey(config);
+
+  if (pendingRequest.has(requestKey)) {
+    const cancelToken = pendingRequest.get(requestKey);
+    cancelToken(requestKey);
+
+    pendingRequest.delete(requestKey);
+  }
+};
+
 export const sendRequest = async <T>(request: RequestForm): Promise<{ data: T | null; error: FetchError | null }> => {
   const axiosConfig: AxiosRequestConfig = {
     method: request.method,
@@ -81,6 +110,29 @@ export const sendRequest = async <T>(request: RequestForm): Promise<{ data: T | 
     }
   }
 
+  const requestKey = makeKey(axiosConfig);
+  const cancelToken = new axios.CancelToken((cancel) => {
+    if (!pendingRequest.has(requestKey)) {
+      pendingRequest.set(requestKey, cancel);
+    } else {
+      cancel();
+    }
+  });
+
+  axiosConfig.cancelToken = cancelToken;
+  if (axiosConfig.cancelToken.reason) {
+    removePendingRequest(axiosConfig);
+  }
+
+  axios.interceptors.request.use(
+    (config) => {
+      removePendingRequest(config);
+      addPendingRequest(config);
+      return config;
+    },
+    (error) => Promise.reject(error)
+  );
+
   try {
     const res = await axios(axiosConfig);
 
@@ -88,13 +140,7 @@ export const sendRequest = async <T>(request: RequestForm): Promise<{ data: T | 
     if (Math.floor(res.status / 100) === 2) {
       return { data: res.data.data, error: null };
     } else {
-      const { data, status, statusText } = res;
-      throw {
-        status,
-        statusText,
-        data,
-        isFetchError: true,
-      } as FetchError;
+      throw res;
     }
   } catch (err) {
     const errRes = handleError(err);

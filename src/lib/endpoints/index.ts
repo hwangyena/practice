@@ -120,18 +120,6 @@ export const sendRequest = async <T>(request: RequestForm): Promise<{ data: T | 
   });
 
   axiosConfig.cancelToken = cancelToken;
-  if (axiosConfig.cancelToken.reason) {
-    removePendingRequest(axiosConfig);
-  }
-
-  axios.interceptors.request.use(
-    (config) => {
-      removePendingRequest(config);
-      addPendingRequest(config);
-      return config;
-    },
-    (error) => Promise.reject(error)
-  );
 
   try {
     const res = await axios(axiosConfig);
@@ -145,6 +133,8 @@ export const sendRequest = async <T>(request: RequestForm): Promise<{ data: T | 
   } catch (err) {
     const errRes = handleError(err);
     return { data: null, error: errRes };
+  } finally {
+    removePendingRequest(axiosConfig);
   }
 };
 

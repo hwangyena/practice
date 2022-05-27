@@ -51,3 +51,8 @@ type ProfileType = {
   hobby: string[];
   description: string;
 };
+
+type SelectOption = {
+  label: string;
+  value: string;
+};

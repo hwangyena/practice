@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Add from 'public/images/add.svg';
 import dynamic from 'next/dynamic';
-import { Loading } from '../custom';
+import { Loading } from '../common';
 import PassengerApiList from 'src/lib/api/passenger';
 import { useSWRConfig } from 'swr';
 // import { useMutation, useQueryClient } from 'react-query';
 
-const PopUp = dynamic(() => import('../custom/pop-up'));
+const PopUp = dynamic(() => import('../common/pop-up'));
 
 interface Props {
   isQuery?: boolean;

@@ -1,10 +1,10 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { BackButton } from 'src/components/custom';
+import { BackButton } from 'src/components/common';
 import { EMAIL_REX } from 'src/lib/regex';
 
-const PopUp = dynamic(() => import('src/components/custom/pop-up'));
+const PopUp = dynamic(() => import('src/components/common/pop-up'));
 
 export default function FindPwd() {
   const [email, setEmail] = useState('');

@@ -1,6 +1,6 @@
 import React from 'react';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
-import { Loading } from 'src/components/custom';
+import { Loading } from 'src/components/common';
 import { PassengerAddButton, PassengerTable } from 'src/components/passenger';
 import { getFetch } from 'src/lib/api';
 import { PassengerStore } from 'src/store';

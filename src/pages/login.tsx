@@ -1,12 +1,12 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
-import { BackButton } from 'src/components/custom';
+import { BackButton } from 'src/components/common';
 import { useUser } from 'src/lib/endpoints/employees';
 import { UsePageLoad } from 'src/lib/hooks';
 import { GlobalStore } from 'src/store';
 
-const PopUp = dynamic(() => import('src/components/custom/pop-up'));
+const PopUp = dynamic(() => import('src/components/common/pop-up'));
 
 export default function Login() {
   const [loginId, setLoginId] = useState('');

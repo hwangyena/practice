@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import Pagination, { PAGE_LIST_PER_ONCE } from 'src/components/custom/pagination';
+import Pagination, { PAGE_LIST_PER_ONCE } from 'src/components/common/pagination';
 import { PassengerAddButton, PassengerTable } from 'src/components/passenger';
 import PassengerApiList from 'src/lib/api/passenger';
 import { PassengerStore } from 'src/store';

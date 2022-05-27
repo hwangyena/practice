@@ -1,6 +1,6 @@
 import { MouseEvent } from 'react';
 import { transPassengerLabelToKor } from '../../lib/function/tranform';
-import { CloseButton } from '../custom';
+import { CloseButton } from '../common';
 
 type Props = {
   passenger: PassengerType;

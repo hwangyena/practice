@@ -77,3 +77,7 @@ type PromisifyItem = {
 };
 
 const item: Promisify<PromisifyItem> = { getItem: async () => 'hey', id: 'hello?' };
+
+/// infer을 사용하는 이유
+type MyType<T> = T extends R ? R : never; // R이 선언되어 있지 않아 Error 발생
+type MyType2<T> = T extends infer R ? R : never;

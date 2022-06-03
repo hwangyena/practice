@@ -9,3 +9,16 @@ type Test = {
 };
 
 const customPick: MyPick<Test, 'age' | 'name'> = { age: 123, name: '' };
+
+// 2. Readonly
+interface Todo {
+  title: string;
+  description: string;
+}
+
+type MyReadonly<T> = { readonly [P in keyof T]: T[P] };
+
+const todo: MyReadonly<Todo> = {
+  title: 'Hey',
+  description: 'foobar',
+};
